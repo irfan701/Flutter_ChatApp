@@ -1,4 +1,5 @@
 import 'package:chat_app_wechat/ui/consts/consts.dart';
+import 'package:chat_app_wechat/ui/views/chat/chat_screen.dart';
 import 'package:chat_app_wechat/ui/widgets/textstyle_widget.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -62,16 +63,14 @@ class HomeScreen extends StatelessWidget {
                 },
               )
             ],
-            bottom: TabBar(tabs: _tabs),
+            bottom: TabBar(indicatorColor: whiteColor, tabs: _tabs),
           ),
           body: TabBarView(
             children: [
               Container(
                 color: redColor,
               ),
-              Container(
-                color: fontGrey,
-              ),
+              ChatScreen(),
               Container(
                 color: lightGrey,
               ),
