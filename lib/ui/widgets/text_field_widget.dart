@@ -1,17 +1,17 @@
 import 'package:chat_app_wechat/ui/consts/consts.dart';
 
-Widget customTextField({label, hint, controller}) {
+Widget TextFieldWidget({hint, controller}) {
   return Column(
     crossAxisAlignment: CrossAxisAlignment.start,
     children: [
-      Text(label,
-          style: TextStyle(
-              fontSize: 14.sp, fontFamily: semibold, color: redColor)),
-      SizedBox(
-        height: 3.h,
-      ),
+      // Text(label,
+      //     style: TextStyle(
+      //         fontSize: 14.sp, fontFamily: semibold, color: redColor)),
+      // SizedBox(
+      //   height: 3.h,
+      // ),
       TextFormField(
-        //controller: controller,
+        controller: controller,
         decoration: InputDecoration(
             hintStyle: TextStyle(fontFamily: semibold, color: textfieldGrey),
             hintText: hint,

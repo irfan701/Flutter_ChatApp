@@ -1,11 +1,17 @@
 import 'package:chat_app_wechat/ui/consts/consts.dart';
 import 'package:chat_app_wechat/ui/models/ChatModel.dart';
+
+import 'package:chat_app_wechat/ui/views/individual_screen.dart';
 import 'package:chat_app_wechat/ui/widgets/textstyle_widget.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 // https://fonts.google.com/icons?selected=Material+Icons:person:&icon.query=person
 //https://pub.dev/packages/flutter_svg/install
+
 class ChatScreen extends StatelessWidget {
+  // ChatScreen({required this.chatModel});
+//  final ChatModel ChatModel;
+
   List<ChatModel> _chats = [
     ChatModel(
         name: "Irfan",
@@ -61,7 +67,10 @@ class ChatScreen extends StatelessWidget {
             // focusColor: Colors.green,
             autofocus: true,
             onTap: () {
-              print("Hello");
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => IndividualScreen(items: items)));
             },
             child: Column(
               children: [
