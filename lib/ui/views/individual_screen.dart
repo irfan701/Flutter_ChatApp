@@ -169,8 +169,10 @@ class _IndividualScreenState extends State<IndividualScreen> {
                                               onPressed: () {
                                                 showModalBottomSheet(
                                                     context: context,
+                                                    backgroundColor:
+                                                        Colors.transparent,
                                                     builder: (builder) =>
-                                                        bottomSheet());
+                                                        bottomSheet(context));
                                               },
                                               icon: Icon(Icons.attach_file)),
                                           IconButton(
@@ -266,10 +268,77 @@ Widget emojiSelect(_emojiController) {
   );
 }
 
-Widget bottomSheet() {
+Widget bottomSheet(context) {
   return Container(
-    height: 200,
-    width: 200,
-    color: Colors.amber,
+    height: 280,
+    width: MediaQuery.of(context).size.width,
+    child: Card(
+      margin: EdgeInsets.all(18),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 10),
+        child: Column(
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                iconCreation(
+                    Icons.insert_drive_file, Colors.indigo, "Document"),
+                SizedBox(
+                  width: 40,
+                ),
+                iconCreation(Icons.camera_alt, Colors.pink, "Camera"),
+                SizedBox(
+                  width: 40,
+                ),
+                iconCreation(Icons.insert_photo, Colors.purple, "Gallery")
+              ],
+            ),
+            SizedBox(
+              height: 30,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                iconCreation(Icons.headset, Colors.orange, "Audio"),
+                SizedBox(
+                  width: 40,
+                ),
+                iconCreation(Icons.location_pin, Colors.teal, "Location"),
+                SizedBox(
+                  width: 40,
+                ),
+                iconCreation(Icons.person, Colors.blue, "Contact")
+              ],
+            )
+          ],
+        ),
+      ),
+    ),
+  );
+}
+
+Widget iconCreation(IconData icon, Color color, String text) {
+  return InkWell(
+    onTap: () {},
+    child: Column(
+      children: [
+        CircleAvatar(
+          radius: 30,
+          backgroundColor: color,
+          child: Icon(
+            color: Colors.white,
+            icon,
+            size: 29,
+          ),
+        ),
+        SizedBox(
+          height: 5,
+        ),
+        Text(
+          text,
+          style: TextStyle(fontSize: 12),
+        )
+      ],
+    ),
   );
 }
