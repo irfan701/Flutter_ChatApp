@@ -1,10 +1,32 @@
 import 'package:chat_app_wechat/ui/consts/consts.dart';
 import 'package:chat_app_wechat/ui/widgets/textstyle_widget.dart';
+import 'package:emoji_picker_flutter/emoji_picker_flutter.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-class IndividualScreen extends StatelessWidget {
-  const IndividualScreen({required this.items});
+class IndividualScreen extends StatefulWidget {
+  IndividualScreen({required this.items});
+
   final items;
+
+  @override
+  State<IndividualScreen> createState() => _IndividualScreenState();
+}
+
+class _IndividualScreenState extends State<IndividualScreen> {
+  // RxBool show = false.obs;
+  FocusNode focusNode = FocusNode();
+  var show = false;
+
+  @override
+  void initState() {
+    focusNode.addListener(() {
+      if (focusNode.hasFocus) {
+        show = false;
+        setState(() {});
+      }
+    });
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -48,7 +70,7 @@ class IndividualScreen extends StatelessWidget {
               ),
               CircleAvatar(
                 child: SvgPicture.asset(
-                  items.isGroup == true ? svgGroups : svgPerson,
+                  widget.items.isGroup == true ? svgGroups : svgPerson,
                   color: Colors.white,
                   width: 36.w,
                   height: 36.h,
@@ -68,7 +90,7 @@ class IndividualScreen extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 TextStyleWidget(
-                    label: items.name,
+                    label: widget.items.name,
                     fontSize: 18.5,
                     fontWeight: FontWeight.bold),
                 TextStyleWidget(
@@ -95,55 +117,85 @@ class IndividualScreen extends StatelessWidget {
         height: MediaQuery.of(context).size.height,
         child: Stack(
           children: [
+            // Obx(
+            //   () => ElevatedButton(
+            //       onPressed: () => show.value == false
+            //           ? show.value = true
+            //           : show.value = false,
+            //       //  show.value != show.value;
+
+            //       child: Text("KEY")),
+            // ),
             ListView(),
             //TextField(),
             Align(
               alignment: Alignment.bottomCenter,
-              child: Row(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.end,
                 children: [
-                  Container(
-                      width: MediaQuery.of(context).size.width - 60,
-                      child: Card(
-                          margin: EdgeInsets.only(left: 2, right: 2, bottom: 8),
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(25)),
-                          child: TextFormField(
-                            textAlignVertical: TextAlignVertical.center,
-                            keyboardType: TextInputType.multiline,
-                            maxLines: 5,
-                            minLines: 1,
-                            decoration: InputDecoration(
-                                border: InputBorder.none,
-                                hintText: "Type a message",
-                                prefixIcon: IconButton(
-                                    onPressed: () {},
-                                    icon: Icon(Icons.emoji_emotions)),
-                                suffixIcon: Row(
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: [
-                                    IconButton(
-                                        onPressed: () {},
-                                        icon: Icon(Icons.attach_file)),
-                                    IconButton(
-                                        onPressed: () {},
-                                        icon: Icon(Icons.camera_alt))
-                                  ],
-                                )),
-                          ))),
-                  Padding(
-                    padding:
-                        const EdgeInsets.only(bottom: 8, right: 5, left: 2),
-                    child: CircleAvatar(
-                      backgroundColor: accentColor,
-                      radius: 25.r,
-                      child: IconButton(
-                          onPressed: () {},
-                          icon: Icon(
-                            Icons.mic,
-                            color: whiteColor,
-                          )),
-                    ),
-                  )
+                  Row(
+                    children: [
+                      Container(
+                          width: MediaQuery.of(context).size.width - 60,
+                          child: Card(
+                              margin:
+                                  EdgeInsets.only(left: 2, right: 2, bottom: 8),
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(25)),
+                              child: TextFormField(
+                                focusNode: focusNode,
+                                textAlignVertical: TextAlignVertical.center,
+                                keyboardType: TextInputType.multiline,
+                                maxLines: 5,
+                                minLines: 1,
+                                decoration: InputDecoration(
+                                    border: InputBorder.none,
+                                    hintText: "Type a message",
+                                    prefixIcon: IconButton(
+                                        onPressed: () {
+                                          focusNode.unfocus();
+                                          focusNode.canRequestFocus = false;
+                                          show = !show;
+                                          setState(() {});
+                                        },
+                                        icon: Icon(Icons.emoji_emotions)),
+                                    suffixIcon: Row(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        IconButton(
+                                            onPressed: () {},
+                                            icon: Icon(Icons.attach_file)),
+                                        IconButton(
+                                            onPressed: () {},
+                                            icon: Icon(Icons.camera_alt))
+                                      ],
+                                    )),
+                              ))),
+                      Padding(
+                        padding:
+                            const EdgeInsets.only(bottom: 8, right: 5, left: 2),
+                        child: CircleAvatar(
+                          backgroundColor: accentColor,
+                          radius: 25.r,
+                          child: IconButton(
+                              onPressed: () {},
+                              icon: Icon(
+                                Icons.mic,
+                                color: whiteColor,
+                              )),
+                        ),
+                      )
+                    ],
+                  ),
+                  // emojiSelect(),
+
+                  show
+                      ? Container(
+                          width: MediaQuery.of(context).size.width,
+                          height: 270.h,
+                          child: emojiSelect(),
+                        )
+                      : Container()
                 ],
               ),
             )
@@ -152,4 +204,44 @@ class IndividualScreen extends StatelessWidget {
       ),
     );
   }
+}
+
+Widget emojiSelect() {
+  return EmojiPicker(
+    onEmojiSelected: (category, emoji) {
+      print(emoji);
+    },
+    onBackspacePressed: () {
+      // Do something when the user taps the backspace button (optional)
+      // Set it to null to hide the Backspace-Button
+    },
+    config: Config(
+      columns: 7,
+
+      //    emojiSizeMax: 32 * (foundation.defaultTargetPlatform == TargetPlatform.iOS ? 1.30 : 1.0), // Issue: https://github.com/flutter/flutter/issues/28894
+      // verticalSpacing: 0,
+//horizontalSpacing: 0,
+      //  gridPadding: EdgeInsets.zero,
+      //  initCategory: Category.RECENT,
+      // bgColor: Colors.black,
+      indicatorColor: Colors.blue,
+      iconColor: Colors.grey,
+      iconColorSelected: Colors.blue,
+      backspaceColor: Colors.blue,
+      skinToneDialogBgColor: Colors.white,
+      skinToneIndicatorColor: Colors.grey,
+      enableSkinTones: true,
+      showRecentsTab: true,
+      recentsLimit: 28,
+      noRecents: const Text(
+        'No Recents',
+        style: TextStyle(fontSize: 20, color: Colors.black26),
+        textAlign: TextAlign.center,
+      ), // Needs to be const Widget
+      loadingIndicator: const SizedBox.shrink(), // Needs to be const Widget
+      tabIndicatorAnimDuration: kTabScrollDuration,
+      categoryIcons: const CategoryIcons(),
+      buttonMode: ButtonMode.MATERIAL,
+    ),
+  );
 }
