@@ -9,37 +9,22 @@ class ButtonCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
-      autofocus: true,
-      onTap: () {
-        // Navigator.push(
-        //     context,
-        //     MaterialPageRoute(
-        //         builder: (context) => IndividualScreen(items: items)));
-      },
-      child: Column(
-        children: [
-          ListTile(
-            leading: CircleAvatar(
-              child: Icon(
-                icon,
-                size: 26,
-                color: Colors.white,
-              ),
-              backgroundColor: Color(0XFF235D366),
-              radius: 23.r,
+    return Column(
+      children: [
+        ListTile(
+          leading: CircleAvatar(
+            child: Icon(
+              icon,
+              size: 26,
+              color: Colors.white,
             ),
-            title: TextStyleWidget(
-                label: name, fontSize: 15.sp, fontWeight: FontWeight.bold),
+            backgroundColor: Color(0XFF235D366),
+            radius: 23.r,
           ),
-          // Padding(
-          //   padding: const EdgeInsets.only(right: 20, left: 80),
-          //   child: Divider(
-          //     thickness: 1.5,
-          //   ),
-          // )
-        ],
-      ),
+          title: TextStyleWidget(
+              label: name, fontSize: 15.sp, fontWeight: FontWeight.bold),
+        ),
+      ],
     );
   }
 }

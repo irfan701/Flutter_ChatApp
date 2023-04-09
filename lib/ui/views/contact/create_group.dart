@@ -1,14 +1,16 @@
 import 'package:chat_app_wechat/ui/consts/consts.dart';
 import 'package:chat_app_wechat/ui/models/ChatModel.dart';
-import 'package:chat_app_wechat/ui/views/contact/button_card.dart';
 import 'package:chat_app_wechat/ui/views/contact/contact_card.dart';
-import 'package:chat_app_wechat/ui/views/contact/create_group.dart';
 import 'package:chat_app_wechat/ui/widgets/textstyle_widget.dart';
-import 'package:flutter_svg/svg.dart';
 
-class SelectContact extends StatelessWidget {
-  SelectContact({super.key});
+class CreateGroup extends StatefulWidget {
+  CreateGroup({super.key});
 
+  @override
+  State<CreateGroup> createState() => _CreateGroupState();
+}
+
+class _CreateGroupState extends State<CreateGroup> {
   List<ChatModel> _chats = [
     ChatModel(
         name: "Irfan",
@@ -48,26 +50,10 @@ class SelectContact extends StatelessWidget {
         icon: svgPerson)
   ];
 
+  List<ChatModel> groups = [];
+
   @override
   Widget build(BuildContext context) {
-    var _popUpMenuItems = [
-      PopupMenuItem(
-        child: Text("Invite a friend"),
-        value: '/hello',
-      ),
-      PopupMenuItem(
-        child: Text("Contacts"),
-        value: '/contacts',
-      ),
-      PopupMenuItem(
-        child: Text("Refresh"),
-        value: '/refresh',
-      ),
-      PopupMenuItem(
-        child: Text("Help"),
-        value: '/help',
-      ),
-    ];
     return Scaffold(
       appBar: AppBar(
         title: Column(
@@ -75,10 +61,8 @@ class SelectContact extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             TextStyleWidget(
-                label: "Select Contact",
-                fontSize: 19,
-                fontWeight: FontWeight.bold),
-            TextStyleWidget(label: "256 Contacts", fontSize: 13),
+                label: "New group", fontSize: 19, fontWeight: FontWeight.bold),
+            TextStyleWidget(label: "Add Participants", fontSize: 13),
           ],
         ),
         actions: [
@@ -88,31 +72,26 @@ class SelectContact extends StatelessWidget {
                 Icons.search,
                 size: 26,
               )),
-          PopupMenuButton(
-            onSelected: (Value) {
-              print(Value);
-            },
-            itemBuilder: (BuildContext context) {
-              return _popUpMenuItems;
-            },
-          )
         ],
       ),
       body: ListView.builder(
-        itemCount: _chats.length + 2,
+        itemCount: _chats.length,
         itemBuilder: (context, index) {
-          if (index == 0) {
-            return InkWell(
-                onTap: () {
-                  Get.to(CreateGroup());
-                },
-                child: ButtonCard(icon: Icons.group, name: "New Group"));
-          } else if (index == 1) {
-            return ButtonCard(icon: Icons.person, name: "New Contact");
-          }
-          var items = _chats[index - 2];
-          return ContactCard(
-            items: items,
+          var items = _chats[index];
+          return InkWell(
+            onTap: () {
+              if (items.select == false) {
+                items.select = true;
+                groups.add(items);
+              } else {
+                items.select = false;
+                groups.remove(items);
+              }
+              setState(() {});
+            },
+            child: ContactCard(
+              items: items,
+            ),
           );
         },
       ),
