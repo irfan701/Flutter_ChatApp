@@ -1,5 +1,6 @@
 import 'package:chat_app_wechat/ui/consts/consts.dart';
 import 'package:chat_app_wechat/ui/models/ChatModel.dart';
+import 'package:chat_app_wechat/ui/views/contact/select_contact.dart';
 
 import 'package:chat_app_wechat/ui/views/individual_screen.dart';
 import 'package:chat_app_wechat/ui/widgets/textstyle_widget.dart';
@@ -55,7 +56,10 @@ class ChatScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       floatingActionButton: FloatingActionButton(
-        onPressed: () {},
+        onPressed: () {
+          Navigator.push(
+              context, MaterialPageRoute(builder: (_) => SelectContact()));
+        },
         child: Icon(Icons.chat),
       ),
       body: ListView.builder(
