@@ -1,10 +1,15 @@
+import 'package:camera/camera.dart';
 import 'package:chat_app_wechat/ui/consts/consts.dart';
+import 'package:chat_app_wechat/ui/views/camera_screen.dart';
 import 'package:chat_app_wechat/ui/views/chat/chat_screen.dart';
 import 'package:chat_app_wechat/ui/widgets/textstyle_widget.dart';
 
 class HomeScreen extends StatelessWidget {
-  const HomeScreen({super.key});
-
+  const HomeScreen({
+    super.key,
+    required this.camera,
+  });
+  final CameraDescription camera;
   @override
   Widget build(BuildContext context) {
     var _tabs = [
@@ -67,9 +72,7 @@ class HomeScreen extends StatelessWidget {
           ),
           body: TabBarView(
             children: [
-              Container(
-                color: redColor,
-              ),
+              CameraScreen(cameras: camera),
               ChatScreen(),
               Container(
                 color: lightGrey,
