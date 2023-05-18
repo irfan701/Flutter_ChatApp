@@ -1,7 +1,6 @@
 import 'dart:io';
 
 import 'package:chat_app_wechat/ui/consts/consts.dart';
-import 'package:chat_app_wechat/ui/widgets/text_field_widget.dart';
 import 'package:video_player/video_player.dart';
 
 class VideoView extends StatefulWidget {
@@ -19,13 +18,9 @@ class _VideoViewState extends State<VideoView> {
   void initState() {
     super.initState();
 
-    // _controller = VideoPlayerController.network(
-    //     'https://flutter.github.io/assets-for-api-docs/assets/videos/bee.mp4')
     _controller = VideoPlayerController.file(File(widget.videoPath))
       ..initialize().then((_) {
-        // Ensure the first frame is shown after the video is initialized, even before the play button has been pressed.
         setState(() {});
-
         print("TTTBB ${widget.videoPath}");
       });
   }

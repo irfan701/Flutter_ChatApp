@@ -1,9 +1,10 @@
+import 'dart:math';
+
 import 'package:camera/camera.dart';
 import 'package:chat_app_wechat/ui/consts/consts.dart';
 import 'package:chat_app_wechat/ui/views/display_picture_screen.dart';
 import 'package:chat_app_wechat/ui/views/video_view.dart';
 import 'package:chat_app_wechat/ui/widgets/textstyle_widget.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 
@@ -22,8 +23,9 @@ class _CameraScreenState extends State<CameraScreen> {
   late CameraController _cameraController;
   late Future<void> _initializeControllerFuture;
   bool isRecording = false;
-
-  final ImagePicker picker = ImagePicker();
+  bool isFlash = false;
+  bool isCameraFront = true;
+  double transform = 0;
 
   @override
   void initState() {
@@ -115,12 +117,19 @@ class _CameraScreenState extends State<CameraScreen> {
               children: [
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  mainAxisSize: MainAxisSize.min,
+                  mainAxisSize: MainAxisSize.max,
                   children: [
                     IconButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          setState(() {
+                            isFlash = !isFlash;
+                          });
+                          isFlash
+                              ? _cameraController.setFlashMode(FlashMode.torch)
+                              : _cameraController.setFlashMode(FlashMode.off);
+                        },
                         icon: Icon(
-                          Icons.flash_off,
+                          isFlash ? Icons.flash_on : Icons.flash_off,
                           color: whiteColor,
                           size: 28,
                         )),
@@ -153,11 +162,26 @@ class _CameraScreenState extends State<CameraScreen> {
                             ),
                     ),
                     IconButton(
-                        onPressed: () {},
-                        icon: Icon(
-                          Icons.flip_camera_ios,
-                          color: whiteColor,
-                          size: 28,
+                        onPressed: () async {
+                          setState(() {
+                            isCameraFront = !isCameraFront;
+                            transform = transform + pi;
+                          });
+
+                          int cameraPos = isCameraFront ? 0 : 1;
+
+                          _cameraController = CameraController(
+                              widget.cameras, ResolutionPreset.high);
+                          _initializeControllerFuture =
+                              _cameraController.initialize();
+                        },
+                        icon: Transform.rotate(
+                          angle: transform,
+                          child: Icon(
+                            Icons.flip_camera_ios,
+                            color: whiteColor,
+                            size: 28,
+                          ),
                         )),
                   ],
                 ),
